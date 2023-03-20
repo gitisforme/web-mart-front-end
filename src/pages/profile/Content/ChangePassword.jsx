@@ -13,14 +13,21 @@ function ChangePassword() {
   const myToken = localStorage.getItem("lToken");
   const dispatch = useDispatch();
   const handleChangePassword = () => {
-
+    if(newPassword != confirmPassword){
+      toast.error("Confirm password doesn't match");
+      return;
+    }
     try {
       dispatch(
         changePasswordActionThunk({
           oldPassword: oldPassword,
           newPassword: newPassword,
         })
-      );
+      ).then(() => {
+        console.log("password changed");
+      }).catch((error) => {
+        console.log("Error caught");
+      });
     } catch (e) {
       console.log("HandleChangePassword caught:", e)
     }

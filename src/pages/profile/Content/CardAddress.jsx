@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     Button,
     IconButton,
@@ -8,9 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons";
 import AddressModal from "./AddressModal";
-import { useState } from 'react';
+import { deleteUserProfileAddress } from '../../../store/profile/profile.actions.async';
 
 const MyCard = (props) => {
+    const dispatch = useDispatch();
     const buttonBg = useColorModeValue("blue.500", "blue.200");
     const buttonColor = useColorModeValue("white", "gray.700");
     const { values } = props;
@@ -19,12 +22,12 @@ const MyCard = (props) => {
     } = values;
     const [isModalOpen, setModalOpen] = useState(false);
 
-    const handleEdit = () => {
-        setModalOpen(true);
-    };
+    const handleDelete = () => {
+        dispatch(deleteUserProfileAddress(values.id));
+    }
 
-    const handleModalClose = () => {
-        setModalOpen(false);
+    const handleSetDefault = () => {
+
     }
 
 
@@ -53,7 +56,7 @@ const MyCard = (props) => {
                     color={buttonColor}
                     _hover={{ bg: "blue.600" }}
                     leftIcon={<EditIcon />}
-                    onClick={handleEdit}
+                    onClick={() => setModalOpen(true)}
                 >
                     Edit
                 </Button>
@@ -65,6 +68,7 @@ const MyCard = (props) => {
                     color="red.500"
                     _hover={{ bg: "transparent" }}
                     _active={{ bg: "transparent" }}
+                    onClick={handleDelete}
                 />
                 {
                     // console.log(values.isDefault)
@@ -74,13 +78,13 @@ const MyCard = (props) => {
                         color={buttonColor}
                         _hover={{ bg: "green.600" }}
                         leftIcon={<StarIcon />}
-                    >
-                        Set as default
+                        onClick={handleSetDefault}
+                    >Set as default
                     </Button>
                 }
 
             </Flex>
-            <AddressModal isOpen={isModalOpen} onClose={handleModalClose} modalValue={values}></AddressModal>
+            <AddressModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} modalValue={values} type="update"></AddressModal>
         </Flex>
     );
 };

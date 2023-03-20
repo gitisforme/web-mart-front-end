@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Button,
   FormControl,
@@ -22,16 +23,29 @@ import {
   Grid,
 } from '@chakra-ui/react';
 
-import { useState } from 'react';
+import { API } from '../../../middleware/middleware';
+import { updateUserProfileAddress } from '../../../store/profile/profile.actions.async';
 
-function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {} }) {
-
+function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {}, type = "add" }) {
+  const dispatch = useDispatch();
   const { id, full_name, phone_number, address1, address2, city, county, country, pincode, houseNumber, isDefault, userId } = modalValue;
   const [addressData, setAddressData] = useState(modalValue);
   // const [isCheck, setChecked] = useState(modalValue.is_default);
 
   const handleCheck = (e) => {
     setAddressData({ ...addressData, is_default: e.target.checked });
+  }
+
+  const handleSubmit = () => {
+    if (type === "add") {
+      API.post("/address/add_address", addressData).then(
+        console.log("1111111111111111111111111111111111111111")
+      ).then(onClose());
+    }
+    else if (type === "update") {
+      dispatch(updateUserProfileAddress(addressData));
+      onClose();
+    }
   }
 
 
@@ -101,7 +115,7 @@ function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {} }) 
           <Button variant="ghost" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue">Save changes</Button>
+          <Button colorScheme="blue" onClick={handleSubmit}>Save changes</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
