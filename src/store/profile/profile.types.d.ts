@@ -7,7 +7,7 @@ type TProfileActionType = ActionType<typeof actions>;
 type TProfileState = {
   loading: boolean;
   profileData: TGetProfilePayload;
-  addresses: []
+  addresses: any[]
 };
 
 type TGetProfilePayload = {

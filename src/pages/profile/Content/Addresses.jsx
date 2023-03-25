@@ -7,7 +7,8 @@ import {
 import MyCard from './CardAddress';
 import { getUserProfileAddresses } from '../../../store/profile/profile.actions.async';
 import AddressModal from "./AddressModal";
-
+import { API } from '../../../middleware/middleware';
+import { errorToast } from '../../../components/toast/toast';
 
 function Addresses() {
   const dispatch = useDispatch();
@@ -25,18 +26,20 @@ function Addresses() {
   }, [addressList]);
 
   const handleModalOpen = () => {
+    
     setIsModalOpen(true);
   };
   const handleModalClose = () => {
     setIsModalOpen(false);
-    // API.get("/address/get_user_address")
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       console.log(res, 'adresses');
-    //       setItems(res.data)
-    //     }
-    //   })
-    //   .catch(err => errorToast("Getting User Addresses    error !"));
+    debugger;
+    API.get("/address/get_user_address")
+      .then(res => {
+        if (res.status === 200) {
+          console.log(res, 'adresses');
+          setItems(res.data)
+        }
+      })
+      .catch(err => errorToast("Getting User Addresses    error !"));
   }
 
   const updateData = () => {

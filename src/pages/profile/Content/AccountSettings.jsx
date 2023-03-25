@@ -163,7 +163,7 @@ function AccountSettings() {
         )}
       </Stack>
       <Box>
-        <Button onClick={handleUpdate}>Update</Button>
+        <Button onClick={handleUpdate}>UpdateAccount</Button>
       </Box>
     </Stack>
   );

@@ -1,3 +1,4 @@
+import { updateUserAddress } from "./profile.action";
 import TimeSlotActionTypeEnum from "./profile.enum";
 import { TProfileActionType, TProfileState } from "./profile.types";
 
@@ -49,14 +50,13 @@ const profileReducer = (
         addresses: buffArr,
       };
     case TimeSlotActionTypeEnum.UPDATE_USER_ADDRESS:
-      state.addresses.map(each => {
+      const addresses = state.addresses.map(each => {
         if (each['id'] === action.payload.id)
-          buffArr.push({ ...action.payload })
+          return action.payload
+        return each
       });
-      console.log(action.payload, '````````````````````````````````')
       return {
-        ...state,
-        addresses: buffArr,
+        ...state, addresses
       };
 
     default:

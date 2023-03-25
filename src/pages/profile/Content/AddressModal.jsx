@@ -36,18 +36,28 @@ function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {}, ty
     setAddressData({ ...addressData, is_default: e.target.checked });
   }
 
+  const clearForm = () => {
+    setAddressData({
+      name: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: '',
+    });
+  };
+
   const handleSubmit = () => {
     if (type === "add") {
       API.post("/address/add_address", addressData).then(
         console.log("1111111111111111111111111111111111111111")
       ).then(onClose());
+      clearForm();
     }
     else if (type === "update") {
-      dispatch(updateUserProfileAddress(addressData));
+      dispatch(updateUserProfileAddress(addressData)); //cdo
       onClose();
     }
   }
-
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -62,14 +72,14 @@ function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {}, ty
         <ModalBody>
           <FormControl>
             <FormLabel>Full Name</FormLabel>
-            <Input placeholder="Enter full name" value={addressData.full_name}
+            <Input placeholder="Enter full name" value={addressData.full_name || ""}
               onChange={e => setAddressData({ ...addressData, full_name: e.target.value })}
             />
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>Phone Number</FormLabel>
             <InputGroup>
-              <Input placeholder="Enter phone number" value={addressData.phone_number}
+              <Input placeholder="Enter phone number" value={addressData.phone_number || ""}
                 onChange={e => setAddressData({ ...addressData, phone_number: e.target.value })}
               />
             </InputGroup>
@@ -77,29 +87,29 @@ function AddressModal({ isOpen = false, onClose = () => { }, modalValue = {}, ty
           <FormControl mt={4}>
             <FormLabel>Address</FormLabel>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              <Input placeholder="Address line 1" value={addressData.address1}
+              <Input placeholder="Address line 1" value={addressData.address1 || ""}
                 onChange={e => setAddressData({ ...addressData, address1: e.target.value })}
               />
-              <Input placeholder="Address line 2" value={addressData.address2}
+              <Input placeholder="Address line 2" value={addressData.address2 || ""}
                 onChange={e => setAddressData({ ...addressData, address2: e.target.value })}
               />
             </Grid>
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>City</FormLabel>
-            <Input placeholder="Enter city" value={addressData.city}
+            <Input placeholder="Enter city" value={addressData.city || ""}
               onChange={e => setAddressData({ ...addressData, city: e.target.value })}
             />
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>State</FormLabel>
-            <Input placeholder="Enter state" value={addressData.county}
+            <Input placeholder="Enter state" value={addressData.county || ""}
               onChange={e => setAddressData({ ...addressData, county: e.target.value })}
             />
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>Zip Code</FormLabel>
-            <NumberInput value={parseInt(addressData.pincode)}
+            <NumberInput value={parseInt(addressData.pincode || 0)}
               onChange={e => setAddressData({ ...addressData, pincode: e })}
             >
               <NumberInputField placeholder="Enter zip code" />
